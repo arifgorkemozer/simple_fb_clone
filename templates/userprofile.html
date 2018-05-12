@@ -1,0 +1,462 @@
+<html>
+
+	{% if profile_data["logged_in_username"] == 'UNKNOWN' %}
+		<head>
+			<title>Login error</title>
+		</head>
+		<body>
+			<h3 class="helvetica"id="txtLoginUser">User: {{ profile_data['logged_in_username'] }}</h3>
+			<hr/>
+			<h3 class="helvetica" >You should login to see this profile.</h3>
+			<a class="helvetica" href="/">Go back to main page</a> and try again after login.
+		</body>
+	{% elif not profile_data["user_exists"] %}
+		<head>
+			<title>User is not found</title>
+		</head>
+		<body>
+			<h3 class="helvetica" id="txtLoginUser">User: {{ profile_data['logged_in_username'] }}</h3>
+			<hr/>
+			<h3 class="helvetica">User is not found.</h3>
+			<a class="helvetica" href="/">Go back to main page.</a>
+		</body>
+	{% else %}
+		<head>
+			<title>User: {{profile_data["user_data"]["username"]}}</title>
+			
+			<script>
+			function addFriendButtonClicked(username) {
+				window.location.replace("/addfriend?username=" + username);
+			}
+			
+			function unfriendButtonClicked(username) {
+				window.location.replace("/unfriend?username=" + username);
+			}
+			
+			function makeProfilePhotoClicked(photo_id) {
+			
+				window.location.replace("/changeprofilephoto?username=" 
+										+ "{{profile_data['user_data']['username']}}" 
+										+ "&photoid=" + photo_id);
+			}
+			
+			
+			function addPhotoButtonClicked() {
+				var text_photo_url = document.getElementById("txtAddPhoto").value;
+				if (text_photo_url != undefined && text_photo_url.replace(/\s/g, '').length != 0) {
+					window.location.replace("/addphoto?username=" 
+											+ "{{profile_data['user_data']['username']}}" 
+											+ "&photourl=" + text_photo_url);
+				}
+			}
+			
+			function addCommentButtonClicked() {
+				var text_comment = document.getElementById("txtAddComment").value;
+				if (text_comment != undefined && text_comment.replace(/\s/g, '').length != 0) {
+					window.location.replace("/addcomment?username=" 
+											+ "{{profile_data['user_data']['username']}}" 
+											+ "&comment=" + text_comment
+											);
+				}
+			}
+			
+			function likePhotoClicked(photo_id) {
+			
+				window.location.replace("/likedislikephoto?username=" 
+										+ "{{profile_data['user_data']['username']}}"
+										+ "&photoid=" + photo_id
+										);
+			}
+			
+			function likeCommentClicked(comment_id) {
+			
+				window.location.replace("/likedislikecomment?username=" 
+										+ "{{profile_data['user_data']['username']}}"
+										+ "&commentid=" + comment_id
+										);
+			}
+
+			</script>
+			
+			
+			<style>
+			
+				.photo-container {
+						display: grid;
+						grid-template-columns: auto auto auto auto;
+						background-color: #e9ebee;
+						padding: 5px;
+						border: 1px solid #ced0d4;
+
+						grid-column-gap: 5px;
+						grid-row-gap: 5px;
+
+						margin: auto;
+						width: 60%;
+				}
+				.photo {
+						background-color: #ffffff;
+						max-width: 250px;
+						border: 1px solid #ced0d4;
+						
+						padding: 1px;
+						font-size: 15px;
+						text-align: center;
+				}
+
+				.comment-container {
+						display: grid;
+						grid-template-columns: auto;
+						background-color: #e9ebee;
+						padding: 5px;
+						border: 1px solid #ced0d4;
+
+						margin: auto;
+						width: 60%;
+				}
+
+				.comment {
+					background-color: #ffffff;
+				    margin: auto;
+				    width: 96%;
+				    border: 1px solid black;
+				    padding: 10px;
+				    margin-bottom: 10px;
+				    box-shadow: 3px 3px 5px silver;
+				}
+
+
+				.likebutton {
+				    background-color: #3B5998;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px black;
+				}
+
+				/* Darker background on mouse-over */
+				.likebutton:hover {
+				    background-color: #0084FF;
+				}
+
+				.unlikebutton {
+				    background-color: #DB4437;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px black;
+				}
+
+				/* Darker background on mouse-over */
+				.unlikebutton:hover {
+				    background-color: OrangeRed;
+				}
+
+				.makeprofilebutton {
+				    background-color: Green;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px black;
+				}
+
+				/* Darker background on mouse-over */
+				.makeprofilebutton:hover {
+				    background-color: #4CAF50;
+				}
+
+				.sectionheader {
+
+					text-align: left;
+					margin: auto;
+				    width: 60%;
+
+				    margin-top: 20px;
+				    margin-bottom: 20px;
+
+					font-color: #4b4f56;
+					font-size: 20px;
+				}
+				
+				
+				.addphotobutton {
+				    background-color: Coral;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px gray;
+				}
+
+				/* Darker background on mouse-over */
+				.addphotobutton:hover {
+				    background-color: LightSalmon;
+				}
+
+				.addcommentbutton {
+				    background-color: RebeccaPurple;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px gray;
+				}
+
+				/* Darker background on mouse-over */
+				.addcommentbutton:hover {
+				    background-color: SlateBlue;
+				}
+				
+				.unfriendbutton {
+					background-color: Tomato;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px gray;
+				}
+				
+				.unfriendbutton:hover {
+				    background-color: OrangeRed;
+				}
+				
+				.addfriendbutton {
+					background-color: RoyalBlue;
+				    border: none;
+				    color: white;
+				    padding: 5px 10px 5px 10px;
+				    font-size: 14px;
+				    cursor: pointer;
+				    box-shadow: 1px 1px 5px gray;
+				}
+				
+				.addfriendbutton:hover {
+				    background-color: MediumBlue;
+				}
+				
+				.helvetica {
+					font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+				}
+
+			</style>
+
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+		</head>
+		<body style="background-color: #e9ebee;">
+			<a class="helvetica" href="/">Main page</a>
+			<h3 class="helvetica" id="txtLoginUser">User: {{ profile_data['logged_in_username'] }}</h3>
+			<hr/>
+			<div style="display: flex; width: 60%; margin: auto;">
+				<div style="width:25%; background-color: white; text-align: center;">
+					<div>
+						{% if not profile_data["user_data"]["profile_photo_id"] %}
+							<img src="http://www.eltis.org/sites/default/files/styles/adaptive/public/default_images/default_user_0.jpg?itok=oxLSK7Nx"
+							alt="profile_photo_{{profile_data['user_data']['username']}}" 
+								style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;"/>
+						{% else %}
+							<img src="{{profile_data['user_data']['profile_photo_url']}}"
+							alt="profile_photo_{{profile_data['user_data']['username']}}" 
+								style="width: 200px; height: 200px; margin-top: 20px; margin-left: 20px;"/>
+						{% endif %}
+					</div>
+					<div style="valign: center; font-size: 30px; margin-left: 20px;">
+						<p class="helvetica">{{profile_data["user_data"]["username"]}}</p>
+						
+						{% if profile_data['logged_in_username'] != profile_data["user_data"]["username"] %}
+							{% if profile_data['logged_in_username'] in profile_data["user_friends"] %}
+								<button style="width: 180px; height: 80px; margin-bottom: 20px;" class="unfriendbutton" id="btnUnfriend_{{item}}" onclick="unfriendButtonClicked('{{profile_data['user_data']['username']}}')">
+									<label>
+										<i class="fas fa-ban"></i> Unfriend
+									</label>
+								</button>
+							
+							{% else %}
+								<button style="width: 180px; height: 80px; margin-bottom: 20px;" class="addfriendbutton" id="btnAddFriend_{{item}}" onclick="addFriendButtonClicked('{{profile_data['user_data']['username']}}')">
+									<label>
+										<i class="fas fa-user-plus"></i> Add As Friend
+									</label>
+								</button>
+							{% endif %}
+						{% endif %}
+					</div>
+				</div>
+				
+				<div style="width:75%; background-color: white;">
+					<p class="helvetica" style="font-size: 25px; margin-left: 20px;">Friends</p>
+					
+					{% if not profile_data["user_friends"] %}
+						<h4 class="helvetica" style="margin-left: 20px;">There are no friends.</h4>
+					{% else %}		
+						
+						{% for friend in profile_data["user_friends"] %}
+							<a class="helvetica" style="margin-left: 20px;" href="/user/{{friend}}">{{ friend }}</a>
+						{% endfor %}
+						
+					{% endif %}
+				
+				</div>
+				
+			</div>
+			
+			{% if profile_data['logged_in_username'] == profile_data["user_data"]["username"] %}
+					<div>
+						<div style="margin: auto; width: 60%; display: flex; valign: center; margin-bottom: 10px; margin-top: 10px;">
+								<input class="helvetica" style="width: 85%; height: 40px;" type="text" id="txtAddPhoto" placeholder="Paste Photo URL..."/>
+								
+								<button style="width: 15%;" class="addphotobutton"  id="btnAddPhoto" onclick="addPhotoButtonClicked()"/>
+									<label>
+										<i class="far fa-images"></i> Add Photo
+									</label>
+								</button>
+						</div>
+
+						<div style="margin: auto; width: 60%; display: flex; valign: center;">
+							<textarea class="helvetica" style="width: 85%; height: 40px;" id="txtAddComment" rows="3" cols="100" placeholder="Write something..."></textarea>
+												
+							<button  style="width: 15%;" class="addcommentbutton" id="btnAddComment" onclick="addCommentButtonClicked()" />
+								<label>
+									<i class="far fa-edit"></i> Add Comment
+								</label>
+							</button>
+						</div>
+					</div>
+			
+			{% endif %}
+
+
+			<div class="sectionheader helvetica">
+				Photos
+			</div>
+					
+			<div class="photo-container">
+					
+				{% if not profile_data["user_photos"] %}
+					<h4 class="helvetica" >No photos are added yet.</h4>
+				{% else %}
+					{% for photo in profile_data["user_photos"] %}
+						{% set photo_data = photo[0] %}
+						{% set photo_likes = photo[1] %}
+						
+						<div class ="photo">
+						
+								<div style="padding-bottom: 5px;">
+									<div style= "padding-bottom: 10px;">
+										<img src="{{photo_data['photo_url']}}" style="width: 200px; height: 200px;"/>
+									</div>
+									
+									<div>
+										{% if profile_data['logged_in_username'] == profile_data["user_data"]["username"] %}
+												<button class="makeprofilebutton" id="btnMakeProfilePhoto_{{photo_data['photo_id']}}" onclick="makeProfilePhotoClicked('{{photo_data['photo_id']}}')">
+													<label>
+														<i class="far fa-user"></i> Make Avatar
+													</label>
+												</button>
+										{% endif %}
+
+										{% if profile_data['logged_in_username'] in photo_likes %}
+												<button class="unlikebutton" id="btnLikePhoto_{{photo_data['photo_id']}}" onclick="likePhotoClicked('{{photo_data['photo_id']}}')"/>
+													<label>
+														<i class="far fa-thumbs-down"></i> Unlike
+													</label>
+												</button>
+
+										{% else %}
+												<button class="likebutton" id="btnLikePhoto_{{photo_data['photo_id']}}" onclick="likePhotoClicked('{{photo_data['photo_id']}}')"/>
+													<label>
+														<i class="far fa-thumbs-up"></i> Like
+													</label>
+												</button>
+										{% endif %}
+										
+									</div>
+								</div>
+								
+								<div>
+									<p class="helvetica" >Added at: {{photo_data['photo_time']}}</p>
+								</div>
+								<div class="helvetica" >
+									{% if not photo_likes %}
+										No likes
+									{% elif photo_likes|length == 1 %}
+										1 like
+									{% else %}
+										{{photo_likes|length}} likes
+									{% endif%}
+								</div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			
+			</div>
+			
+			<div class="sectionheader helvetica">
+				Comments
+			</div>
+					
+			<div class="comment-container">
+					
+					
+				{% if not profile_data["user_comments"] %}
+					<h4 class="helvetica" >No comments are added yet.</h4>
+				{% else %}		
+					
+					{% for comment in profile_data["user_comments"] %}
+						{% set comment_data = comment[0] %}
+						{% set comment_likes = comment[1] %}
+						
+						<div class="comment">
+							<div class="helvetica" style="text-align: left; font-size: small;">
+									{{comment_data['comment_time']}}
+							</div>
+							
+							<div class="helvetica" >
+									{{comment_data['comment_text']}}
+							</div>
+							
+							<div style="text-align: right; font-size: small;">
+									<div class="helvetica" >
+											{% if not comment_likes %}
+												No likes
+											{% elif comment_likes|length == 1 %}
+												1 like
+											{% else %}
+												{{comment_likes|length}} likes
+											{% endif%}
+									</div>
+									<div>
+										{% if profile_data['logged_in_username'] in comment_likes %}
+											<button class="unlikebutton" id="btnLikeComment_{{comment_data['comment_id']}}" onclick="likeCommentClicked('{{comment_data['comment_id']}}')">
+												<label>
+													<i class="far fa-thumbs-down"></i> Unlike
+												</label>
+											</button>
+										{% else %}
+											<button class="likebutton" id="btnLikeComment_{{comment_data['comment_id']}}" onclick="likeCommentClicked('{{comment_data['comment_id']}}')">
+												<label>
+													<i class="far fa-thumbs-up"></i> Like
+												</label>
+											</button>
+										{% endif%}
+									</div>
+							</div>
+						</div>
+					{% endfor %}
+					
+				{% endif %}
+			
+			</div>
+				
+			
+		</body>
+	{% endif %}
+
+</html>

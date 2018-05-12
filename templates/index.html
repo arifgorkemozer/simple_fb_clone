@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Simple FB App</title>
+
+		<script>
+		
+		function loginButtonClicked() {
+			var text_username = document.getElementById("tboxUsername").value;
+			window.location.replace("/login?username=" + text_username);
+		}
+		
+		function logoutButtonClicked() {
+			window.location.replace("/logout");
+		}
+
+		function addUserButtonClicked() {
+			var text_username = document.getElementById("tboxUsername").value;
+			window.location.replace("/add?username=" + text_username);
+		}
+
+		function deleteUserButtonClicked() {
+			var text_username = document.getElementById("tboxUsername").value;
+			window.location.replace("/delete?username=" + text_username);
+		}
+		</script>
+		
+		<style>
+		
+			.helvetica {
+				font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		
+		<h3 class="helvetica" id="txtLoginUser">User: {{ logged_in_username }}</h3>
+
+		<hr/>
+
+		<input style="width: 500px;" type="text" id="tboxUsername" placeholder="Write a username to login as user, add user, delete user...">
+		<input type="button" id="btnLoginAsUser" value="Login As User" onclick="loginButtonClicked()">
+		<input type="button" id="btnLogout" value="Log Out" onclick="logoutButtonClicked()">
+		<input type="button" id="btnAddUser" value="Add User" onclick="addUserButtonClicked()">
+		<input type="button" id="btnDeleteUser" value="Delete User" onclick="deleteUserButtonClicked()">
+
+		<hr/>
+		All Users:
+		
+		<br/>
+		{% for item in all_usernames %}
+			{% if item == logged_in_username %}
+				<a class="helvetica" href="/user/{{item}}">=>{{ item }}</a>
+			{% else %}
+				{% if logged_in_username == 'UNKNOWN' %}
+					<a class="helvetica" >{{ item }}</a>
+				{% else %}
+					<a class="helvetica"  href="/user/{{item}}">{{ item }}</a>
+				{% endif %}
+			{% endif %}
+			<br/>
+		{% endfor %}
+	</body>
+
+</html>
