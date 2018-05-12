@@ -1,4 +1,4 @@
-# simple_fb_clone
+# Simple Facebook-like Application
 Sample project for Cloud Computing course homework 2.
 
 This is a Python Flask project. This project connects to a MongoDB NoSQL database.
