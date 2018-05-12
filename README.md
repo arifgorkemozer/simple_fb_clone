@@ -7,4 +7,7 @@ In a "database.config" file, you need to specify connection string and target sc
 
 To run this Python Flask project, follow instructions in below link first, and then start application with:
 
->>_ python app.py
+> python app.py
+
+Python Flask link:
+http://flask.pocoo.org/docs/1.0/installation/
