@@ -5,9 +5,9 @@ This is a Python Flask project. This project connects to a MongoDB NoSQL databas
 
 Create a "database.config" file, you need to specify connection string and target schema name for the application like below:
 
-connection_string = <mongodb_connection_string_here>
+> connection_string = <mongodb_connection_string_here>
 
-schema_name = <schema_name_here>
+> schema_name = <schema_name_here>
 
 To run this Python Flask project, follow instructions in below link first, and then start application with:
 
