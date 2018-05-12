@@ -1,3 +1,7 @@
 # ignore changes in 'database.config'
 
 database.config
+
+# ignore "venv" folder
+
+venv/*
