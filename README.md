@@ -14,6 +14,7 @@ http://flask.pocoo.org/docs/1.0/installation/
 
 After virtual environment installation, install following packages:
 > pip install pymongo
+
 > pip install flask
 
 In the end, run application with following command:
