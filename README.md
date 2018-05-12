@@ -9,9 +9,13 @@ Create a "database.config" file, you need to specify connection string and targe
 
 > schema_name = <schema_name_here>
 
-To run this Python Flask project, follow instructions in below link first, and then start application with:
-
-> python app.py
-
-Python Flask link:
+To run this Python Flask project, follow instructions in below link first:
 http://flask.pocoo.org/docs/1.0/installation/
+
+After virtual environment installation, install following packages:
+> pip install pymongo
+
+> pip install flask
+
+In the end, run application with following command:
+> python app.py
